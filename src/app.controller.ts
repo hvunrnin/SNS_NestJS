@@ -2,26 +2,9 @@ import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 
 
-interface Post{
-  author: string;
-  title: string;
-  content: string;
-  likeCount: number;
-  commentCount: number;
-}
-
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
-
-  @Get()
-  getPost(): Post {
-    return {
-      author: 'aaa',
-      title: '111',
-      content: 'qwerty',
-      likeCount: 1000000,
-      commentCount: 99999,
-    };
-  }
 }
+
+// (nest cli 사용) nest g resource로 post 모듈 생성
