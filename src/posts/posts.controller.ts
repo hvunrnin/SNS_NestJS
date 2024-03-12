@@ -2,41 +2,6 @@ import { Controller, Get, NotFoundException, Param, Post, Body, Put, Delete} fro
 import { PostsService } from './posts.service';
 
 
-interface PostModel{
-  id: number;
-  author: string;
-  title: string;
-  content: string;
-  likeCount: number;
-  commentCount: number;
-}
-
-let posts : PostModel[] = [
-  {
-    id: 1,
-    author: 'aaa',
-    title: '111',
-      content: 'qwerty',
-      likeCount: 1000000,
-      commentCount: 99999,
-  },
-  {
-    id: 2,
-    author: 'aaa',
-    title: '222',
-      content: 'wertyu',
-      likeCount: 122222,
-      commentCount: 99998,
-  },
-  {
-    id: 3,
-    author: 'bbb',
-    title: '333',
-      content: 'ertyui',
-      likeCount: 122223,
-      commentCount: 99978,
-  },
-]
 
 @Controller('posts')
 export class PostsController {
@@ -46,20 +11,14 @@ export class PostsController {
   //    모든 POST를 다 가져온다
   @Get()
   getPosts(){
-    return posts;
+    return this.postsService.getAllPosts();
   }
 
   // 2) GET /posts/:id
   //    id에 해당되는 POST를 가져온다
   @Get(':id')
   getPost(@Param('id') id: string){
-    const post = posts.find((post) => post.id === +id);
-    
-    if(!post){
-      throw new NotFoundException;
-    }
-    
-    return post;
+    return this.postsService.getPostById(+id);
   }
 
   // 3) POST /posts
@@ -70,21 +29,9 @@ export class PostsController {
     @Body('title') title: string,
     @Body('content') content: string,
   ){
-    const post : PostModel = {
-      id: posts[posts.length - 1].id + 1,
-      author,
-      title,
-      content,
-      likeCount: 0,
-      commentCount: 0,
-    };
-
-    posts = [
-      ...posts,
-      post,
-    ];
-
-    return post;
+    return this.postsService.createPost(
+      author, title, content,
+    );
   }
 
   // 4) PUT /posts/:id
@@ -96,41 +43,17 @@ export class PostsController {
     @Body('title') title?: string,
     @Body('content') content?: string,
   ){
-    const post = posts.find(post => post.id === +id);
-
-    if(!post){
-      throw new NotFoundException();
-    }
-
-    if(author){
-      post.author = author;
-    }
-    if(title){
-      post.title = title;
-    }
-    if(content){
-      post.content = content;
-    }
-
-    posts = posts.map(prevPost => prevPost.id === +id ? post : prevPost); // 선택한 id와 같으면 바뀐 post를, 아니면 그대로 유지
-
-    return post;
+    return this.postsService.updatePost(
+      +id, author, title, content,
+    );
   }
 
-  // 5) DELETE /posts/:od
+  // 5) DELETE /posts/:id
   //    id에 해당되는 POST를 삭제한다
   @Delete(':id')
   deletePost(
     @Param('id') id: string,
   ){
-    const post = posts.find((post) => post.id === +id);
-    
-    if(!post){
-      throw new NotFoundException;
-    }
-    
-    posts = posts.filter(post => post.id !== +id);
-
-    return id;
+    return this.postsService.deletePost(+id);
   }
 }
