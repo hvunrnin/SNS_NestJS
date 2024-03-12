@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-export class PostModel{
+export class PostsModel{
     @PrimaryGeneratedColumn() //primary column
     id: number;
 
@@ -15,7 +15,7 @@ export class PostModel{
     content: string;
 
     @Column()
-    likeCount: string;
+    likeCount: number;
 
     @Column()
     commentCount: number;

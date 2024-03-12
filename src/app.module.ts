@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PostsModule } from './posts/posts.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PostModel } from './posts/entities/posts.entity';
+import { PostsModel } from './posts/entities/posts.entity';
 
 @Module({
   imports: [
@@ -17,7 +17,7 @@ import { PostModel } from './posts/entities/posts.entity';
       password: 'postgres',
       database: 'postgres',
       entities: [
-        PostModel,
+        PostsModel,
       ],
       synchronize: true, // 개발환경에서는 true가 편한데, 프로덕션 환경에선 맘대로 DB 구조가 바뀔 수 있어서 false로 자동 싱크 맞추기 해제하기
     }),
