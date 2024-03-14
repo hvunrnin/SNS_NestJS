@@ -25,12 +25,12 @@ export class PostsController {
   //    POST를 생성한다
   @Post()
   postPosts(
-    @Body('author') author: string,
+    @Body('authorId') authorId: number,
     @Body('title') title: string,
     @Body('content') content: string,
   ){
     return this.postsService.createPost(
-      author, title, content,
+      authorId, title, content,
     );
   }
 
@@ -39,12 +39,11 @@ export class PostsController {
   @Put(':id')
   putPost( // 하나의 요소만 바꾸고 싶을 때
     @Param('id') id: string,
-    @Body('author') author?: string,
     @Body('title') title?: string,
     @Body('content') content?: string,
   ){
     return this.postsService.updatePost(
-      +id, author, title, content,
+      +id, title, content,
     );
   }
 

@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { PostsModule } from './posts/posts.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostsModel } from './posts/entities/posts.entity';
+import { UsersModule } from './users/users.module';
+import { UsersModel } from './users/entities/users.entity';
 
 @Module({
   imports: [
@@ -18,9 +20,11 @@ import { PostsModel } from './posts/entities/posts.entity';
       database: 'postgres',
       entities: [
         PostsModel,
+        UsersModel,
       ],
       synchronize: true, // 개발환경에서는 true가 편한데, 프로덕션 환경에선 맘대로 DB 구조가 바뀔 수 있어서 false로 자동 싱크 맞추기 해제하기
     }),
+    UsersModule,
   ], // 다른 module 불러오는 거
   controllers: [AppController],
   providers: [AppService],
