@@ -1,4 +1,4 @@
-import { Controller, Get, NotFoundException, Param, Post, Body, Put, Delete} from '@nestjs/common';
+import { Controller, Get, NotFoundException, Param, Post, Body, Put, Delete, ParseIntPipe, DefaultValuePipe} from '@nestjs/common';
 import { PostsService } from './posts.service';
 
 
@@ -17,8 +17,8 @@ export class PostsController {
   // 2) GET /posts/:id
   //    id에 해당되는 POST를 가져온다
   @Get(':id')
-  getPost(@Param('id') id: string){
-    return this.postsService.getPostById(+id);
+  getPost(@Param('id', ParseIntPipe) id: number){
+    return this.postsService.getPostById(id);
   }
 
   // 3) POST /posts
@@ -28,6 +28,7 @@ export class PostsController {
     @Body('authorId') authorId: number,
     @Body('title') title: string,
     @Body('content') content: string,
+    // @Body('isPublic', new DefaultValuePipe(true)) isPublic: boolean,
   ){
     return this.postsService.createPost(
       authorId, title, content,
@@ -38,7 +39,7 @@ export class PostsController {
   //    id에 해당되는 POST를 변경한다
   @Put(':id')
   putPost( // 하나의 요소만 바꾸고 싶을 때
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body('title') title?: string,
     @Body('content') content?: string,
   ){
@@ -51,7 +52,7 @@ export class PostsController {
   //    id에 해당되는 POST를 삭제한다
   @Delete(':id')
   deletePost(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
   ){
     return this.postsService.deletePost(+id);
   }
