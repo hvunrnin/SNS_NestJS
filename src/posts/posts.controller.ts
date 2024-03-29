@@ -1,5 +1,10 @@
-import { Controller, Get, NotFoundException, Param, Post, Body, Put, Delete, ParseIntPipe, DefaultValuePipe} from '@nestjs/common';
+import { Controller, Get, NotFoundException, Param, Post, Body, Put, Delete, ParseIntPipe, DefaultValuePipe, UseGuards, Request, Patch} from '@nestjs/common';
 import { PostsService } from './posts.service';
+import { AccessTokenGuard } from 'src/auth/guard/bearer-token.guard';
+import { UsersModel } from 'src/users/entities/users.entity';
+import { User } from 'src/users/decorator/user.decorator';
+import { CreatePostDto } from './dto/create-post.dto';
+import { UpdatePostDto } from './dto/update-post.dto';
 
 
 
@@ -23,28 +28,37 @@ export class PostsController {
 
   // 3) POST /posts
   //    POST를 생성한다
+  //
+  // DTO - Data Transfer Object
   @Post()
+  @UseGuards(AccessTokenGuard) // 다른 사용자 이름으로 글 못 쓰게
   postPosts(
-    @Body('authorId') authorId: number,
-    @Body('title') title: string,
-    @Body('content') content: string,
+    //@Request() req:any,
+    @User('id') userId: number,
+    //@Body('authorId') authorId: number,
+
+    //@Body('title') title: string,
+    //@Body('content') content: string,
+    @Body() body: CreatePostDto,
     // @Body('isPublic', new DefaultValuePipe(true)) isPublic: boolean,
   ){
+    //const authorId = req.user.id;
     return this.postsService.createPost(
-      authorId, title, content,
+      userId, body,
     );
   }
 
-  // 4) PUT /posts/:id
+  // 4) PATCH /posts/:id
   //    id에 해당되는 POST를 변경한다
-  @Put(':id')
-  putPost( // 하나의 요소만 바꾸고 싶을 때
+  @Patch(':id')
+  patchPost( // 하나의 요소만 바꾸고 싶을 때
     @Param('id', ParseIntPipe) id: number,
-    @Body('title') title?: string,
-    @Body('content') content?: string,
+    // @Body('title') title?: string,
+    // @Body('content') content?: string,
+    @Body() body: UpdatePostDto,
   ){
     return this.postsService.updatePost(
-      +id, title, content,
+      id, body,
     );
   }
 

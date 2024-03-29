@@ -4,6 +4,7 @@ import { UsersModel } from 'src/users/entities/users.entity';
 import { HASH_ROUNDS, JWT_SECRET } from './const/auth.const';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
+import { RegisterUserDto } from './dto/register-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -108,9 +109,13 @@ export class AuthService {
 
     // 토큰 검증
     verifyToken(token: string){
-        return this.jwtService.verify(token, {
-            secret: JWT_SECRET,
-        });
+        try{
+            return this.jwtService.verify(token, {
+                secret: JWT_SECRET,
+            });
+        }catch(e){
+            throw new UnauthorizedException('토큰이 만료됐거나 잘못된 토큰입니당');
+        }
     }
 
     rotateToken(token: string, isRefreshToken: boolean){
@@ -193,7 +198,7 @@ export class AuthService {
         return this.loginUser(existingUser);
     }
 
-    async registerWithEmail(user: Pick<UsersModel, 'nickname' | 'email' | 'password'>){
+    async registerWithEmail(user: RegisterUserDto){
         const hash = await bcrypt.hash(
             user.password,
             HASH_ROUNDS,

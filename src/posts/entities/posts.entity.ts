@@ -1,4 +1,6 @@
+import { IsString } from "class-validator";
 import { BaseModel } from "src/common/entity/base.entity";
+import { stringValidationMessage } from "src/common/validation-message/string-validation.message";
 import { UsersModel } from "src/users/entities/users.entity";
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
@@ -12,9 +14,16 @@ export class PostsModel extends BaseModel{
     author: UsersModel;
 
     @Column()
+    // 이 값은 무조건 스트링이여야되고 이를 검증하기 위해
+    @IsString({
+        message: stringValidationMessage,
+    })
     title: string;
 
     @Column()
+    @IsString({
+        message: stringValidationMessage,
+    })
     content: string;
 
     @Column()
