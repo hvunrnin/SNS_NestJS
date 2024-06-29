@@ -6,6 +6,7 @@ import { IsEmail, IsString, Length, ValidationArguments, max } from "class-valid
 import { lengthValidationMessage } from "src/common/validation-message/length-validation.message";
 import { stringValidationMessage } from "src/common/validation-message/string-validation.message";
 import { emailValidationMessage } from "src/common/validation-message/email-validation.message";
+import { Exclude } from "class-transformer";
 
 /**
  * id: number
@@ -22,6 +23,7 @@ import { emailValidationMessage } from "src/common/validation-message/email-vali
  */
 
 @Entity()
+//@Exclude() //다 가리고 싶음 (보여주고 싶은 거만 @Expose())
 export class UsersModel extends BaseModel{
     @Column({
         length: 20,
@@ -57,6 +59,21 @@ export class UsersModel extends BaseModel{
     @Length(3,8,{
         message: lengthValidationMessage,
     })
+    /**
+     * Request
+     * frontend -> backend
+     * plain object(JSON) -> backend에서 dto 형태로 바꿔서 다룸
+     * 
+     * Response
+     * backend -> frontend
+     * class instace(dto) -> plain object (JSON)
+     * 
+     * toClassOnly -> class instance로 변환될 때만 (요청 시)
+     * toPlainOnly -> plain object로 변환될 때만 (응답 시)
+     */
+    @Exclude({
+        toPlainOnly: true, // 응답 시 비밀번호 보안
+    }) 
     password: string;
 
     @Column({
