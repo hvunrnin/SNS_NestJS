@@ -1,4 +1,26 @@
+# services:
+#   postgres:
+#     image: postgres:15
+#     restart: always
+#     volumes: 
+#       - ./postgres-data:/var/lib/postgresql/data
+#     ports:
+#       - "5432:5432"
+#     environment:
+#       POSTGRES_USER: postgres
+#       POSTGRES_PASSWORD: postgres
+#       POSTGRES_DB: postgres
+version: '3'
 services:
+  app:
+    image: node:14
+    volumes:
+      - .:/usr/src/app
+    working_dir: /usr/src/app
+    command: sh -c "npm install && npm run build && npm test"
+    depends_on:
+      - postgres
+
   postgres:
     image: postgres:15
     restart: always
