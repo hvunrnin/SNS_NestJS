@@ -8,6 +8,7 @@ import { AuthModule } from 'src/auth/auth.module';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { UsersModel } from 'src/users/entities/users.entity';
 import { UsersService } from 'src/users/users.service';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports:[
@@ -19,6 +20,6 @@ import { UsersService } from 'src/users/users.service';
     ]),
   ],
   controllers: [PostsController],
-  providers: [PostsService, AuthService, UsersService], //여기에 가져와진 것들을 해당 모듈에서 다 쓸 수 있음
+  providers: [PostsService, AuthService, UsersService,ConfigService], //여기에 가져와진 것들을 해당 모듈에서 다 쓸 수 있음
 })
 export class PostsModule {}

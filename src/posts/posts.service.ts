@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PaginatePostDto } from './dto/paginate-post.dto';
+import { ConfigService } from '@nestjs/config';
 
 // export interface PostModel{
 //     id: number;
@@ -46,7 +47,8 @@ import { PaginatePostDto } from './dto/paginate-post.dto';
 export class PostsService {
     constructor(
       @InjectRepository(PostsModel)
-      private readonly postsRepository: Repository<PostsModel>
+      private readonly postsRepository: Repository<PostsModel>,
+      private readonly configService: ConfigService,
       // repository 이용해서 원하는 모델을 기반으로 DB와 소통하고 연동
     ){}
 
