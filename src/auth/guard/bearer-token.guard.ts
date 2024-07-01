@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from
 import { Observable } from "rxjs";
 import { AuthService } from "../auth.service";
 import { resourceUsage } from "process";
-import { UsersService } from "src/users/users.service";
+import { UsersService } from "../../users/users.service";
 
 @Injectable()
 export class BearerTokenGuard implements CanActivate{

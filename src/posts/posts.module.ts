@@ -18,9 +18,9 @@ import { MulterModule } from '@nestjs/platform-express';
     //.forRoot는 typeorm 연결 설정, .forFeature은 모델에 해당되는 레포지토리 주입할 때
     TypeOrmModule.forFeature([
       PostsModel,
+      UsersModel,
     ]),
     AuthModule,
-    UsersModel,
     CommonModule,
     MulterModule.register({
       limits:{
